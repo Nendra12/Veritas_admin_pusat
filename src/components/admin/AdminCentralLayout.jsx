@@ -1,6 +1,7 @@
 // src/components/admin/AdminCentralLayout.jsx
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { authAPI } from "../../utils/api";
 
 function AdminCentralLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -58,7 +59,25 @@ function AdminCentralLayout() {
                 `${navLinkBase} ${isActive ? navLinkActive : navLinkInactive}`
                 }
             >
-                <span>Server Daerah</span>
+                <span>Daerah</span>
+            </NavLink>
+
+            <NavLink
+                to="/admin/pusat/panel/lembaga"
+                className={({ isActive }) =>
+                `${navLinkBase} ${isActive ? navLinkActive : navLinkInactive}`
+                }
+            >
+                <span>Server Lembaga</span>
+            </NavLink>
+
+            <NavLink
+                to="/admin/pusat/panel/putusan"
+                className={({ isActive }) =>
+                `${navLinkBase} ${isActive ? navLinkActive : navLinkInactive}`
+                }
+            >
+                <span>Manajemen Putusan</span>
             </NavLink>
         </nav>
 
@@ -69,7 +88,10 @@ function AdminCentralLayout() {
                         text-white bg-red-500 hover:bg-red-600 
                         border border-red-500 hover:border-red-600
                         transition-colors cursor-pointer"
-                onClick={() => navigate("/admin/pusat")}
+                onClick={() => {
+                  authAPI.logout();
+                  navigate("/admin/pusat");
+                }}
             >
                 Logout
             </button>
@@ -127,7 +149,27 @@ function AdminCentralLayout() {
                     }
                 >
                     <span>🖥️</span>
-                    <span>Server Daerah</span>
+                    <span>Daerah</span>
+                </NavLink>
+
+                <NavLink
+                    to="/admin/pusat/panel/lembaga"
+                    className={({ isActive }) =>
+                    `${navLinkBase} ${isActive ? navLinkActive : navLinkInactive}`
+                    }
+                >
+                    <span>🏛️</span>
+                    <span>Manajemen Lembaga</span>
+                </NavLink>
+
+                <NavLink
+                    to="/admin/pusat/panel/putusan"
+                    className={({ isActive }) =>
+                    `${navLinkBase} ${isActive ? navLinkActive : navLinkInactive}`
+                    }
+                >
+                    <span>📄</span>
+                    <span>Manajemen Putusan</span>
                 </NavLink>
 
                 <NavLink

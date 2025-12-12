@@ -1,56 +1,43 @@
 // src/App.jsx
-import { Routes, Route, Outlet, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
-
+import ProtectedRoute from "./components/common/ProtectedRoute";
 import AdminCentralLogin from "./pages/admin/AdminCentralLogin";
 import AdminCentralLayout from "./components/admin/AdminCentralLayout";
 import CentralDashboard from "./pages/admin/CentralDashboard";
 import CentralSyncMonitoring from "./pages/admin/CentralSyncMonitoring";
 import CentralRegionManagement from "./pages/admin/CentralRegionManagement";
+import CentralLembagaManagement from "./pages/admin/CentralLembagaManagement";
+import CentralPutusanManagement from "./pages/admin/CentralPutusanManagement";
 import CentralDataIntegrity from "./pages/admin/CentralDataIntegrity";
 import CentralProfile from "./pages/admin/CentralProfile";
-
-
-// Wrapper untuk route public (pakai MainLayout)
-function PublicLayoutWrapper() {
-  return (
-    <MainLayout>
-      <Outlet />
-    </MainLayout>
-  );
-}
 
 function App() {
   return (
     <Routes>
-      {/* ketika user buka "/" langsung diarahkan ke /admin/daerah */}
+      {/* Redirect root ke admin pusat */}
       <Route path="/" element={<Navigate to="/admin/pusat" replace />} />
 
+      {/* Login page (public) */}
       <Route path="/admin/pusat" element={<AdminCentralLogin />} />
-      <Route path="/admin/pusat/panel" element={<AdminCentralLayout />}>
+      
+      {/* Protected admin routes */}
+      <Route 
+        path="/admin/pusat/panel" 
+        element={
+          <ProtectedRoute>
+            <AdminCentralLayout />
+          </ProtectedRoute>
+        }
+      >
         <Route index element={<CentralDashboard />} />
         <Route path="dashboard" element={<CentralDashboard />} />
-        <Route
-          path="monitoring-sinkron"
-          element={<CentralSyncMonitoring />}
-        />
-
-        {/* menambahkan & mengkonfigurasi server daerah */}
-        <Route
-          path="server-daerah"
-          element={<CentralRegionManagement />}
-        />
-
-        {/* validasi status data & integritas metadata */}
-        <Route
-          path="integritas-data"
-          element={<CentralDataIntegrity />}
-        />
-
-        <Route
-          path="profile"
-          element={<CentralProfile />}
-        />
+        <Route path="monitoring-sinkron" element={<CentralSyncMonitoring />} />
+        <Route path="server-daerah" element={<CentralRegionManagement />} />
+        <Route path="lembaga" element={<CentralLembagaManagement />} />
+        <Route path="putusan" element={<CentralPutusanManagement />} />
+        <Route path="integritas-data" element={<CentralDataIntegrity />} />
+        <Route path="profile" element={<CentralProfile />} />
       </Route>
     </Routes>
   );
